@@ -120,6 +120,14 @@ static struct resource dmec_gpio_irq_resources[DMEC_MAX_GPIO_CHIPS];
 static struct resource dmec_wdt_irq_resource;
 static struct resource dmec_i2c_irq_resource;
 
+static struct mfd_cell_acpi_match dmec_acpi_match_i2c = {
+	.pnpid ="DI2C0001"
+};
+
+static struct mfd_cell_acpi_match dmec_acpi_match_gpio = {
+	.pnpid ="DGP0001"
+};
+
 static struct mfd_cell dmec_devs[] = {
 	[DMEC_I2C] = {
 		.name = "dmec-i2c",
@@ -127,18 +135,21 @@ static struct mfd_cell dmec_devs[] = {
 		.pdata_size = sizeof(dmec_i2c_data),
 		.resources = &dmec_i2c_irq_resource,
 		.num_resources = 1,
+		.acpi_match = &dmec_acpi_match_i2c,
 		.id = 0,
 	},
 	[DMEC_GPIOA] = {
 		.name = "dmec-gpio",
 		.resources = &dmec_gpio_irq_resources[0],
 		.num_resources = 1,
+		.acpi_match = &dmec_acpi_match_gpio,
 		.id = 0,
 	},
 	[DMEC_GPIOB] = {
 		.name = "dmec-gpio",
 		.resources = &dmec_gpio_irq_resources[1],
 		.num_resources = 1,
+		.acpi_match = &dmec_acpi_match_gpio,
 		.id = 1,
 	},
 	[DMEC_WDT] = {
