@@ -233,9 +233,8 @@ static irqreturn_t dmec_gpio_irq_handler(int irq, void *dev_id)
 	struct dmec_gpio_priv *p = dev_id;
 	struct irq_domain *d = p->gpio_chip.irq.domain;
 	unsigned int stat, pending;
-	unsigned long flags;
 
-	raw_spin_lock_irqsave(&p->lock, flags);
+
 	do {
 		regmap_read(p->regmap, DMEC_GPIO_IRQSTA_OFFSET(p), &stat);
 		pending = stat;
@@ -246,7 +245,6 @@ static irqreturn_t dmec_gpio_irq_handler(int irq, void *dev_id)
 			pending &= ~BIT(offset);
 		}
 	} while (stat);
-	raw_spin_unlock_irqrestore(&p->lock, flags);
 
 	return IRQ_HANDLED;
 }
